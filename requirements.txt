@@ -1,0 +1,25 @@
+# SmolLM3-3B Chatbot Requirements
+# Note: PyTorch installation is handled by torch.js script based on platform/GPU
+
+# Core ML dependencies
+torch>=2.0.0
+transformers>=4.40.0
+accelerate
+tokenizers
+safetensors
+
+# Web interface
+gradio>=4.0.0
+
+# Text processing and model support
+sentencepiece
+protobuf
+huggingface-hub
+
+# Utility libraries
+numpy
+packaging
+pyyaml
+regex
+requests
+tqdm
