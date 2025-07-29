@@ -1,0 +1,120 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+app/env/
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# PyTorch models and cache
+app/models/
+models/
+*.pth
+*.pt
+*.bin
+*.safetensors
+
+# Hugging Face cache
+app/.cache/
+.cache/
+app/transformers_cache/
+transformers_cache/
+
+# Gradio temporary files
+app/gradio_cached_examples/
+gradio_cached_examples/
+app/flagged/
+flagged/
+
+# Installation markers
+app/INSTALLATION_COMPLETE.txt
+app/UPDATE_COMPLETE.txt
+
+# Logs
+*.log
+app/*.log
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp
+app/*.tmp
+app/*.temp
+
+# Requirements (generated during install)
+app/requirements.txt
+app/README.md
+
+# Git and version control
+.git/
+*.orig
+*.rej
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Node.js (if any JS dependencies)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python packaging
+*.whl
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# PyCharm
+.idea/
+
+# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+
+# pytest
+.pytest_cache/
