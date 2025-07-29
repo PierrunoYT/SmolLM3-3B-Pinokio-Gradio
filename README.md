@@ -64,14 +64,14 @@ SmolLM3-3B/
 ├── update.js               # Update workflow
 ├── reset.js                # Reset/cleanup workflow
 ├── torch.js                # PyTorch installation
-├── smollm3_gradio.py       # Gradio application
+├── app.py                  # Main Gradio application
 ├── requirements.txt        # Python dependencies specification
 ├── icon.png                # Project icon
 ├── README.md               # This file
 ├── .gitignore              # Git ignore rules
 └── app/                    # Created during installation
     ├── env/                # Python virtual environment
-    ├── smollm3_gradio.py   # Gradio app (copied from root)
+    ├── app.py              # Main application (copied from root)
     └── requirements.txt    # Python dependencies (copied from root)
 ```
 
