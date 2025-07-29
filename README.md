@@ -65,13 +65,14 @@ SmolLM3-3B/
 ├── reset.js                # Reset/cleanup workflow
 ├── torch.js                # PyTorch installation
 ├── smollm3_gradio.py       # Gradio application
+├── requirements.txt        # Python dependencies specification
 ├── icon.png                # Project icon
 ├── README.md               # This file
 ├── .gitignore              # Git ignore rules
 └── app/                    # Created during installation
     ├── env/                # Python virtual environment
     ├── smollm3_gradio.py   # Gradio app (copied from root)
-    └── requirements.txt    # Python dependencies
+    └── requirements.txt    # Python dependencies (copied from root)
 ```
 
 ## 🔧 Technical Details
@@ -84,10 +85,15 @@ SmolLM3-3B/
 - **Precision**: FP16 on GPU, FP32 on CPU
 
 ### Dependencies
-- PyTorch (with CUDA support if available)
-- Transformers (HuggingFace)
-- Gradio 
-- argparse, sys, os (Python standard library)
+All Python dependencies are specified in `requirements.txt`:
+- **PyTorch** (≥2.0.0) with CUDA support when available
+- **Transformers** (≥4.40.0) for model loading and inference
+- **Gradio** (≥4.0.0) for the web interface
+- **Accelerate, Tokenizers, SafeTensors** for optimized model handling
+- **SentencePiece, Protobuf** for text processing
+- **NumPy, PyYAML, Requests** and other utility libraries
+
+Note: PyTorch installation with appropriate CUDA support is handled automatically by the Pinokio installation scripts.
 
 ### GPU Support Matrix
 
