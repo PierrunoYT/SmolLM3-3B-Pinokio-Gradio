@@ -3,31 +3,48 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 import gradio as gr
 import argparse
 import sys
-import os
 
 # Model configuration
 model_name = "HuggingFaceTB/SmolLM3-3B"
-device = "cuda" if torch.cuda.is_available() else "cpu"
+device = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
 
 print(f"🚀 Loading SmolLM3-3B model...")
 print(f"📱 Device: {device}")
 print(f"🔧 PyTorch version: {torch.__version__}")
 
-# Load tokenizer and model
-try:
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForCausalLM.from_pretrained(
-        model_name,
-        torch_dtype=torch.float16 if device == "cuda" else torch.float32,
-        device_map="auto" if device == "cuda" else None
-    )
+    # Load tokenizer and model
+    try:
+        tokenizer = AutoTokenizer.from_pretrained(model_name)
+        model = AutoModelForCausalLM.from_pretrained(
+            model_name,
+            torch_dtype=torch.float16 if device in {"cuda", "mps"} else torch.float32,
+            device_map="auto" if device in {"cuda", "mps"} else None
+        )
     if device == "cpu":
         model = model.to(device)
-    
+
     print(f"✅ Model loaded successfully on {device}")
 except Exception as e:
     print(f"❌ Error loading model: {e}")
     sys.exit(1)
+
+
+def format_prompt(prompt, enable_thinking=False):
+    """Build chat prompt with tokenizer template when available."""
+    messages = [{"role": "user", "content": prompt}]
+
+    if hasattr(tokenizer, "apply_chat_template"):
+        template_kwargs = {
+            "tokenize": False,
+            "add_generation_prompt": True,
+        }
+
+        if "enable_thinking" in tokenizer.apply_chat_template.__code__.co_varnames:
+            template_kwargs["enable_thinking"] = enable_thinking
+
+        return tokenizer.apply_chat_template(messages, **template_kwargs)
+
+    return f"User: {prompt}\nAssistant:"
 
 def chat(prompt, enable_thinking=False, max_tokens=256, temperature=0.6, top_p=0.95):
     """Generate response using SmolLM3-3B"""
@@ -35,18 +52,8 @@ def chat(prompt, enable_thinking=False, max_tokens=256, temperature=0.6, top_p=0
         return "Please enter a prompt."
     
     try:
-        # Format the conversation
-        messages = [
-            {"role": "user", "content": prompt}
-        ]
-        
         # Apply chat template
-        text = tokenizer.apply_chat_template(
-            messages,
-            tokenize=False,
-            add_generation_prompt=True,
-            enable_thinking=enable_thinking,
-        )
+        text = format_prompt(prompt, enable_thinking=enable_thinking)
         
         # Tokenize input
         model_inputs = tokenizer([text], return_tensors="pt").to(model.device)
@@ -59,7 +66,8 @@ def chat(prompt, enable_thinking=False, max_tokens=256, temperature=0.6, top_p=0
                 temperature=float(temperature),
                 top_p=float(top_p),
                 do_sample=True,
-                pad_token_id=tokenizer.eos_token_id
+                eos_token_id=tokenizer.eos_token_id,
+                pad_token_id=tokenizer.eos_token_id if tokenizer.eos_token_id is not None else 0,
             )
         
         # Decode response
