@@ -37,8 +37,8 @@ A complete Pinokio installation package for running SmolLM3-3B locally with a be
 
 ## 🎯 Usage
 
-1. **Start the Application**: Click "Start SmolLM3 Chatbot" in Pinokio
-2. **Open Web Interface**: Click "Open SmolLM3 Chatbot" when available (defaults to http://127.0.0.1:7860)
+1. **Start the Application**: Click "Start" in Pinokio
+2. **Open Web Interface**: Click "Open Web UI" when available (Pinokio assigns the first free port, starting at 7860)
 3. **Chat**: Type your message and press Send or hit Enter
 4. **Advanced Options**:
    - Toggle "🧠 Extended Thinking Mode" for reasoning traces
@@ -50,7 +50,7 @@ A complete Pinokio installation package for running SmolLM3-3B locally with a be
 ### Command Line Options
 
 The Python application supports several command-line arguments:
-- `--port`: Port to run the server on (default: 7860)
+- `--port`: Port to run the server on (default: 7860; Pinokio passes a free port)
 - `--host`: Host to run the server on (default: 127.0.0.1)
 - `--share`: Create a public Gradio link for sharing
 
@@ -58,7 +58,7 @@ The Python application supports several command-line arguments:
 
 ```
 SmolLM3-3B/
-├── pinokio.js              # Main Pinokio configuration
+├── pinokio.js              # Main Pinokio configuration (menu)
 ├── install.js              # Installation workflow
 ├── start.js                # Application startup
 ├── update.js               # Update workflow
@@ -66,13 +66,9 @@ SmolLM3-3B/
 ├── torch.js                # PyTorch installation
 ├── app.py                  # Main Gradio application
 ├── requirements.txt        # Python dependencies specification
-├── icon.png                # Project icon
 ├── README.md               # This file
 ├── .gitignore              # Git ignore rules
-└── app/                    # Created during installation
-    ├── env/                # Python virtual environment
-    ├── app.py              # Main application (copied from root)
-    └── requirements.txt    # Python dependencies (copied from root)
+└── env/                    # Python virtual environment (created during installation)
 ```
 
 ## 🔧 Technical Details
@@ -80,28 +76,27 @@ SmolLM3-3B/
 ### Model Information
 - **Model**: HuggingFaceTB/SmolLM3-3B
 - **Parameters**: 3 billion
-- **Context Length**: Up to 8192 tokens
+- **Context Length**: Up to 64K tokens
 - **License**: Apache 2.0
 - **Precision**: FP16 on GPU, FP32 on CPU
 
 ### Dependencies
 All Python dependencies are specified in `requirements.txt`:
-- **PyTorch** (≥2.0.0) with CUDA support when available
-- **Transformers** (≥4.40.0) for model loading and inference
+- **Transformers** (≥4.53.0) for model loading and inference (SmolLM3 support)
 - **Gradio** (≥4.0.0) for the web interface
 - **Accelerate, Tokenizers, SafeTensors** for optimized model handling
 - **SentencePiece, Protobuf** for text processing
 - **NumPy, PyYAML, Requests** and other utility libraries
 
-Note: PyTorch installation with appropriate CUDA support is handled automatically by the Pinokio installation scripts.
+Note: PyTorch is deliberately absent from `requirements.txt`. `torch.js` installs the build that matches your platform and GPU during installation.
 
 ### GPU Support Matrix
 
 | Platform | NVIDIA | AMD | CPU |
 |----------|--------|-----|-----|
-| Windows | CUDA 12.8 + XFormers | DirectML | CPU-only |
-| Linux | CUDA 12.8 + XFormers + SageAttention | ROCm 6.2.4 | CPU-only |
-| macOS | N/A | N/A | CPU + Metal |
+| Windows | CUDA 12.8 | DirectML | CPU-only |
+| Linux | CUDA 12.8 | ROCm 6.3 | CPU-only |
+| macOS | N/A | N/A | CPU + Metal (MPS) |
 
 ## 🚨 Troubleshooting
 

@@ -84,7 +84,6 @@ app/requirements.txt
 app/README.md
 
 # Git and version control
-.git/
 *.orig
 *.rej
 
@@ -118,3 +117,9 @@ coverage.xml
 
 # pytest
 .pytest_cache/
+
+# Agent tooling
+.claude/
+.codex/
+.gemini/
+.open-edit/
