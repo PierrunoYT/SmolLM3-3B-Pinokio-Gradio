@@ -15,6 +15,10 @@ tokenizer = None
 model = None
 device = "cpu"
 
+# Gradio 6 moved app-level options such as ``theme`` from Blocks() to launch().
+GRADIO_MAJOR = int(gr.__version__.split(".")[0])
+THEME = gr.themes.Soft()
+
 
 def detect_device():
     """Return the best available torch device name."""
@@ -129,7 +133,11 @@ def chat(prompt, enable_thinking=False, max_tokens=256, temperature=0.6, top_p=0
 
 def create_interface():
     """Create and configure the Gradio interface."""
-    with gr.Blocks(title="SmolLM3-3B Chatbot", theme=gr.themes.Soft()) as iface:
+    blocks_kwargs = {"title": "SmolLM3-3B Chatbot"}
+    if GRADIO_MAJOR < 6:
+        blocks_kwargs["theme"] = THEME
+
+    with gr.Blocks(**blocks_kwargs) as iface:
         gr.Markdown(
             """
             # 🤖 SmolLM3-3B Chatbot
@@ -231,12 +239,16 @@ def main():
     print(f"🌐 Starting Gradio interface on {args.host}:{args.port}")
 
     interface = create_interface()
-    interface.launch(
-        server_name=args.host,
-        server_port=args.port,
-        share=args.share,
-        show_error=True,
-    )
+    launch_kwargs = {
+        "server_name": args.host,
+        "server_port": args.port,
+        "share": args.share,
+        "show_error": True,
+    }
+    if GRADIO_MAJOR >= 6:
+        launch_kwargs["theme"] = THEME
+
+    interface.launch(**launch_kwargs)
 
 
 if __name__ == "__main__":
