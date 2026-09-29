@@ -1,5 +1,17 @@
 module.exports = {
   run: [
+    // Install the platform specific pytorch build first so that
+    // requirements.txt (accelerate depends on torch) reuses it instead of
+    // pulling the generic PyPI build.
+    {
+      method: "script.start",
+      params: {
+        uri: "torch.js",
+        params: {
+          venv: "env"
+        }
+      }
+    },
     // Install the python dependencies into the "env" virtual environment
     {
       method: "shell.run",
@@ -8,16 +20,6 @@ module.exports = {
         message: [
           "uv pip install -r requirements.txt"
         ]
-      }
-    },
-    // Install the platform specific pytorch build
-    {
-      method: "script.start",
-      params: {
-        uri: "torch.js",
-        params: {
-          venv: "env"
-        }
       }
     },
     {
