@@ -17,7 +17,7 @@ A complete Pinokio installation package for running SmolLM3-3B locally with a be
 
 ## 📋 Requirements
 
-- **RAM**: 8GB+ (12GB+ recommended for smooth operation)
+- **RAM**: 16GB+ when running on CPU (the model is loaded in FP32, ~12GB); 8GB+ with a GPU
 - **Storage**: ~6GB for model files (downloaded automatically)
 - **GPU**: Optional but highly recommended (8GB+ VRAM for best performance)
 - **OS**: Windows 10/11, macOS, or Linux
@@ -45,7 +45,7 @@ A complete Pinokio installation package for running SmolLM3-3B locally with a be
    - Adjust temperature (0.1-2.0) for response creativity
    - Modify top-p (0.1-1.0) for response diversity
    - Set max tokens (50-1000) for response length
-   - Use "Clear" button to reset the conversation
+   - Use "Clear" button to empty the message and response boxes (each message is answered independently; there is no chat history)
 
 ### Command Line Options
 
@@ -94,7 +94,7 @@ Note: PyTorch is deliberately absent from `requirements.txt`. `torch.js` install
 
 | Platform | NVIDIA | AMD | CPU |
 |----------|--------|-----|-----|
-| Windows | CUDA 12.8 | DirectML | CPU-only |
+| Windows | CUDA 12.8 | CPU (DirectML is installed but not used by the app) | CPU-only |
 | Linux | CUDA 12.8 | ROCm 6.3 | CPU-only |
 | macOS | N/A | N/A | CPU + Metal (MPS) |
 
@@ -119,7 +119,7 @@ Note: PyTorch is deliberately absent from `requirements.txt`. `torch.js` install
 
 **Installation errors**
 - Ensure you have sufficient disk space (~10GB)
-- Check that Python 3.9+ is available
+- Check that Python 3.10+ is available (required by Gradio 5+)
 - Try running as administrator on Windows
 
 ### Performance Tips
@@ -134,7 +134,7 @@ Note: PyTorch is deliberately absent from `requirements.txt`. `torch.js` install
 The package includes an automatic update system:
 
 1. Click "Update" in the Pinokio interface
-2. Wait for dependencies and model updates to complete
+2. Wait for the repository pull and dependency reinstall to complete (the model itself is cached by Hugging Face and is not re-downloaded)
 3. Restart the application to use the latest version
 
 ## 🤝 Contributing
